@@ -19,11 +19,17 @@ class GraphGen {
     `;
     let typeDefs = '';
     let query = '';
+
+    // this type is required by graphql.
+    // Because of this, if the graphql collections
+    // passed into saturn do not have a mutations file,
+    // we must create a dummy one, hence
+    // B1533EC23A57BFB7A5730D202C059C8E
     let Mutations = `
       type Mutations {
     `;
-    let mutation = '';
 
+    let mutation = '';
     readdirSync(this.path).forEach(dir => {
       if (existsSync(`${this.path}/${dir}/index.js`)) {
         /* eslint global-require: "off" */
@@ -35,8 +41,14 @@ class GraphGen {
       }
     });
 
+
     RootQuery += `${query}\n  }\n`;
-    Mutations += `${mutation}\n  }\n`;
+
+    if (mutation.length === 0) {
+      Mutations += 'B1533EC23A57BFB7A5730D202C059C8E(params: String!): String\n  }\n';
+    } else {
+      Mutations += `${mutation}\n  }\n`;
+    }
     typeDefs += RootQuery;
     typeDefs += Mutations;
     typeDefs += SchemaDefinition;
@@ -47,6 +59,7 @@ class GraphGen {
     let mergedResolvers = {};
     let rootQuery = {};
     let rootMutations = {};
+    let foundMutations = false;
     readdirSync(this.path).forEach(dir => {
       if (existsSync(`${this.path}/${dir}/index.js`)) {
         /* eslint global-require: "off" */
@@ -54,9 +67,22 @@ class GraphGen {
         const { resolvers, queries, mutations } = require(`${this.path}/${dir}`);
         mergedResolvers = merge(mergedResolvers, resolvers);
         rootQuery = merge(rootQuery, queries);
-        rootMutations = merge(rootMutations, mutations);
+        if (mutations) { // if empty, don't run merge.
+          foundMutations = true;
+          rootMutations = merge(rootMutations, mutations);
+        }
       }
     });
+
+    const objToReturn = {
+      ...mergedResolvers,
+    };
+    objToReturn.RootQuery = rootQuery;
+    if (foundMutations) {
+      objToReturn.Mutations = rootMutations;
+    } else { // return empty random mutation to satisfy graphql.
+      rootMutations = { B1533EC23A57BFB7A5730D202C059C8E: () => { } };
+    }
 
     return {
       RootQuery: rootQuery,

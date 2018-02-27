@@ -55,9 +55,9 @@ describe('NEW TESTS Combine Resolvers', function () {
     done();
   });
 
-  it('Mutations should have upvotePost key and should be a function', done => {
-    expect(resolvers.Mutations).toIncludeKey('upvotePost');
-    expect(resolvers.Mutations.upvotePost).toBeA('function');
+  it('Mutations should have B1533EC23A57BFB7A5730D202C059C8E key and should be a function', done => {
+    expect(resolvers.Mutations).toIncludeKey('B1533EC23A57BFB7A5730D202C059C8E');
+    expect(resolvers.Mutations.B1533EC23A57BFB7A5730D202C059C8E).toBeA('function');
     done();
   });
 
@@ -115,17 +115,15 @@ describe('NEW TESTS Make Schema', function () {
     done();
   });
 
-  it('schema should return a upvotePost mutation type', done => {
-    const query = schema.getTypeMap().Mutations.getFields().upvotePost;
+  it('schema should return a B1533EC23A57BFB7A5730D202C059C8E mutation type', done => {
+    const query = schema.getTypeMap().Mutations.getFields().B1533EC23A57BFB7A5730D202C059C8E;
     expect(query).toExist();
-    const post = schema.getTypeMap().Post;
-    expect(query.type).toBe(post);
-    expect(query.args[0].name).toBe('postId');
-    expect(query.args[0].type).toEqual(new GraphQLNonNull(GraphQLInt));
+    expect(query.args[0].name).toBe('params');
+    expect(query.args[0].type).toEqual('String!');
     done();
   });
 
-  it('should have a Author type', done => {
+  it('should have a String type', done => {
     const type = schema.getTypeMap().Author;
     expect(type).toExist();
     const fields = type.getFields();
