@@ -1,5 +1,5 @@
 import { readdirSync, existsSync } from 'fs';
-import { merge } from 'lodash';
+import { merge, isEmpty } from 'lodash';
 
 class GraphGen {
   constructor(path) {
@@ -7,12 +7,6 @@ class GraphGen {
   }
 
   createTypes() {
-    const SchemaDefinition = `
-    schema {
-      query: RootQuery
-      mutation: Mutations
-    }
-  `;
     let RootQuery = `
       # the schema allows the following queries:
       type RootQuery {
@@ -20,11 +14,6 @@ class GraphGen {
     let typeDefs = '';
     let query = '';
 
-    // this type is required by graphql.
-    // Because of this, if the graphql collections
-    // passed into saturn do not have a mutations file,
-    // we must create a dummy one, hence
-    // B1533EC23A57BFB7A5730D202C059C8E
     let Mutations = `
       type Mutations {
     `;
@@ -41,17 +30,18 @@ class GraphGen {
       }
     });
 
-
     RootQuery += `${query}\n  }\n`;
-
-    if (mutation.length === 0) {
-      Mutations += 'B1533EC23A57BFB7A5730D202C059C8E(params: String!): String\n  }\n';
-    } else {
-      Mutations += `${mutation}\n  }\n`;
-    }
-    typeDefs += RootQuery;
-    typeDefs += Mutations;
+    Mutations += `${mutation}\n  }\n`;
+    typeDefs += query.length !== 0 ? RootQuery : '';
+    typeDefs += mutation.length !== 0 ? Mutations : '';
+    const SchemaDefinition = `
+    schema {
+    ${query.length !== 0 ? 'query: RootQuery\n' : ''}
+    ${mutation.length !== 0 ? 'mutation: Mutations\n' : ''}
+  }
+  `;
     typeDefs += SchemaDefinition;
+
     return typeDefs;
   }
 
@@ -59,7 +49,6 @@ class GraphGen {
     let mergedResolvers = {};
     let rootQuery = {};
     let rootMutations = {};
-    let foundMutations = false;
     readdirSync(this.path).forEach(dir => {
       if (existsSync(`${this.path}/${dir}/index.js`)) {
         /* eslint global-require: "off" */
@@ -67,28 +56,20 @@ class GraphGen {
         const { resolvers, queries, mutations } = require(`${this.path}/${dir}`);
         mergedResolvers = merge(mergedResolvers, resolvers);
         rootQuery = merge(rootQuery, queries);
-        if (mutations) { // if empty, don't run merge.
-          foundMutations = true;
-          rootMutations = merge(rootMutations, mutations);
-        }
+        rootMutations = merge(rootMutations, mutations);
       }
     });
 
-    const objToReturn = {
-      ...mergedResolvers,
-    };
-    objToReturn.RootQuery = rootQuery;
-    if (foundMutations) {
-      objToReturn.Mutations = rootMutations;
-    } else { // return empty random mutation to satisfy graphql.
-      rootMutations = { B1533EC23A57BFB7A5730D202C059C8E: () => { } };
+    const objToReturn = { ...mergedResolvers };
+    if (!isEmpty(rootQuery)) {
+      objToReturn.RootQuery = rootQuery;
     }
 
-    return {
-      RootQuery: rootQuery,
-      Mutations: rootMutations,
-      ...mergedResolvers,
-    };
+    if (!isEmpty(rootMutations)) {
+      objToReturn.Mutations = rootMutations;
+    }
+
+    return objToReturn;
   }
 
   makeSchema() {
