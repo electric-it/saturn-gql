@@ -11,10 +11,10 @@ import {
 } from 'graphql';
 import Saturn from '../src';
 
-describe('Combine Types', function () {
+describe('NEW TESTS Combine Types', function () {
   let types;
   before(done => {
-    const saturn = new Saturn(`${__dirname}/working`);
+    const saturn = new Saturn(`${__dirname}/not-working`);
     types = saturn.createTypes();
     done();
   });
@@ -25,10 +25,10 @@ describe('Combine Types', function () {
   });
 });
 
-describe('Combine Resolvers', function () {
+describe('NEW TESTS Combine Resolvers', function () {
   let resolvers;
   before(done => {
-    const saturn = new Saturn(`${__dirname}/working`);
+    const saturn = new Saturn(`${__dirname}/not-working`);
     resolvers = saturn.createResolvers();
     done();
   });
@@ -84,10 +84,10 @@ describe('Combine Resolvers', function () {
   });
 });
 
-describe('Make Schema', function () {
+describe('NEW TESTS Make Schema', function () {
   let schema;
   before(done => {
-    const saturn = new Saturn(`${__dirname}/working`);
+    const saturn = new Saturn(`${__dirname}/not-working`);
     schema = makeExecutableSchema(saturn.makeSchema());
     done();
   });
