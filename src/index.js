@@ -1,5 +1,5 @@
 import { readdirSync, existsSync } from 'fs';
-import { merge } from 'lodash';
+import { merge, isEmpty } from 'lodash';
 
 class GraphGen {
   constructor(path) {
@@ -7,23 +7,18 @@ class GraphGen {
   }
 
   createTypes() {
-    const SchemaDefinition = `
-    schema {
-      query: RootQuery
-      mutation: Mutations
-    }
-  `;
     let RootQuery = `
       # the schema allows the following queries:
       type RootQuery {
     `;
     let typeDefs = '';
     let query = '';
+
     let Mutations = `
       type Mutations {
     `;
-    let mutation = '';
 
+    let mutation = '';
     readdirSync(this.path).forEach(dir => {
       if (existsSync(`${this.path}/${dir}/index.js`)) {
         /* eslint global-require: "off" */
@@ -37,9 +32,16 @@ class GraphGen {
 
     RootQuery += `${query}\n  }\n`;
     Mutations += `${mutation}\n  }\n`;
-    typeDefs += RootQuery;
-    typeDefs += Mutations;
+    typeDefs += query.length !== 0 ? RootQuery : '';
+    typeDefs += mutation.length !== 0 ? Mutations : '';
+    const SchemaDefinition = `
+    schema {
+    ${query.length !== 0 ? 'query: RootQuery\n' : ''}
+    ${mutation.length !== 0 ? 'mutation: Mutations\n' : ''}
+  }
+  `;
     typeDefs += SchemaDefinition;
+
     return typeDefs;
   }
 
@@ -58,11 +60,16 @@ class GraphGen {
       }
     });
 
-    return {
-      RootQuery: rootQuery,
-      Mutations: rootMutations,
-      ...mergedResolvers,
-    };
+    const objToReturn = { ...mergedResolvers };
+    if (!isEmpty(rootQuery)) {
+      objToReturn.RootQuery = rootQuery;
+    }
+
+    if (!isEmpty(rootMutations)) {
+      objToReturn.Mutations = rootMutations;
+    }
+
+    return objToReturn;
   }
 
   makeSchema() {
