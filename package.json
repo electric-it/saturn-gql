@@ -1,6 +1,6 @@
 {
   "name": "saturn-gql",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "package modularized apollo-server schema",
   "main": "lib/index.js",
   "repository": "git@github.com:electric-it/saturn-gql.git",
