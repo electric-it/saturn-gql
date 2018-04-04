@@ -1,6 +1,13 @@
-# Saturn
+# Saturn-GQL
 
 [![Build Status](https://travis-ci.org/electric-it/saturn-gql.svg?branch=master)](https://travis-ci.org/electric-it/saturn-gql)
+[![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/saturn-gql)
+
+
+## Install
+```
+npm i saturn-gql
+```
 
 This library packages up your modularized [graphql-tools](https://github.com/apollographql/graphql-tools) schema. Modularizing your schema allows you
 abstract your types, queries and mutations into like groups.
