@@ -32,7 +32,7 @@ graphql
 
 ## To Use
 ```
-import Saturn from 'saturn';
+import Saturn from 'saturn-gql';
 const saturn = new Saturn(`${__dirname}/graphql`);
 ```
 
