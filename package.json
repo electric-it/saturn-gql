@@ -1,5 +1,5 @@
 {
-  "name": "saturn",
+  "name": "saturn-gql",
   "version": "1.0.1",
   "description": "package modularized apollo-server schema",
   "main": "lib/index.js",
