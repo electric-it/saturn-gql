@@ -4,7 +4,7 @@
   "description": "package modularized apollo-server schema",
   "main": "lib/index.js",
   "repository": "git@github.com:electric-it/saturn-gql.git",
-  "author": "GE Digital",
+  "author": "Brian Kurtz",
   "contributors": [
     "Brian Kurtz (https://github.com/bskurtz)"
   ],
