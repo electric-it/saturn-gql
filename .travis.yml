@@ -1,3 +1,11 @@
 language: node_js
 node_js:
-  - "stable"
+- stable
+deploy:
+  provider: npm
+  email: devin.hurley@ge.com
+  api_key:
+    secure: wz4PFSpWHMHyp/LTPT28K+0smlQyVVuo82AEKAXGYL6r1a9G2OHZeVd5PlB0Mq3HzDYjRnXPvvAG4vxbe1sOPurVA0wqiMNPZ7UA8enLsVzfSItJMUvj5i0sKG7a3j+QHyA++B+kqilqKHBq1mRzmFvZCnqETW87Qteu6OTSKM53lTx/h4ylS+hpNxsKYS2awki6XIRCIIvNTBmRPr7FDHqwLt/LKSh0SqXtWspCGhSa1FLqUFjK6Jci6weXwTt4XFryCoEA5NPC4VLK1h4HHKd0mTxU/wzelrPfZdILzfLNqQbVuXnGc/I81Jsg2VuNfaJOQxmyt8KpuOdNyw/FiJXVaCVitGbt0iVSWUWhP06YQy174i4vurpeh6wnmQZRy2Yugkh5IrxTwDhaUD6NIAh899BbPA0yeLoFei2ZXrFHaYq1Da7bogTZAYFk3lSUTrUbLOlMKC6LRYdRWJloOMK70nQYE8ixS8/qcKEv/lNDV72ZE0GaCyTboCGmGMOr5XEI5OAN/xyifY0jpGhPAPN7CDSdfbKWCvDX6d+YXAHNOqVCAs10k0XCuhvlZtGCrNIlMtaAt9Ro+UVRI73smZjNHEyFUrlE+QdyOEOs08YwYt50cqU/zdC8xUQMIBqTzAtZGFrQiKGaZJQPV/6fq+WQ40JRefVQYN6RKEonMyY=
+  on:
+    repo: electric-it/saturn-gql
+    branch: master

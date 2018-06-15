@@ -1,10 +1,10 @@
 {
-  "name": "saturn",
-  "version": "1.0.1",
+  "name": "saturn-gql",
+  "version": "1.0.2",
   "description": "package modularized apollo-server schema",
   "main": "lib/index.js",
   "repository": "git@github.com:electric-it/saturn-gql.git",
-  "author": "GE Digital",
+  "author": "Brian Kurtz",
   "contributors": [
     "Brian Kurtz (https://github.com/bskurtz)"
   ],

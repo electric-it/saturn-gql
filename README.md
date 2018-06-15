@@ -1,6 +1,13 @@
 # Saturn-GQL
 
 [![Build Status](https://travis-ci.org/electric-it/saturn-gql.svg?branch=master)](https://travis-ci.org/electric-it/saturn-gql)
+[![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/saturn-gql)
+
+
+## Install
+```
+npm i saturn-gql
+```
 
 Has your GraphQL api code grown out of control? Does your GraphQL api sit in a single file with thousands of lines of code? Unsure of the best way to logically separate it all? Saturn-GQL is here to help!
 
@@ -29,7 +36,7 @@ graphql
 ## To Use
 
 ``` javascript
-import Saturn from 'saturn';
+import Saturn from 'saturn-gql';
 const saturn = new Saturn(`${__dirname}/graphql`);
 ```
 
